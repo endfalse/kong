@@ -26,6 +26,7 @@ const config:AxiosConfig = {
     timeout: 3000,
     bigUploadApi: '',
     normalUploadAPi: '',
+    refreshTokenApi:'',
     headerHook: (headers) => {
         console.debug("尚未实现kconfig.api.headerHook",headers)
     },

@@ -13,12 +13,11 @@ export interface UploadRequestOptions {
 export interface UploadRawFile extends File {
     uid: number;
 }
-export declare class UploadAjaxError extends Error {
+export interface UploadAjaxError extends Error {
     name: string;
     status: number;
     method: string;
     url: string;
-    constructor(message: string, status: number, method: string, url: string);
 }
 export interface UploadProgressEvent extends ProgressEvent {
     percent: number;

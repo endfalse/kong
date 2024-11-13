@@ -1,14 +1,19 @@
 {
-  "name": "king",
+  "name": "kongj",
   "version": "2.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "jest"
   },
   "author": "kongjing",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/endfalse/kong"
+   },
+  "license": "MIT",
   "dependencies": {
     "axios": "^1.7.5",
     "@types/spark-md5": "^3.0.4"

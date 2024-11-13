@@ -1,21 +1,21 @@
+import { AxiosResponseHeaders, RawAxiosResponseHeaders } from "axios";
 import { FeedbackEnum, AjaxResultCode } from "../enums/system";
-export interface KongConfig{
+
+export interface AxiosConfig{
+    baseUrl:string;
+    timeout:number;
+    bigUploadApi:string;
+    normalUploadApi:string;
+    refreshTokenApi:string;
+    headerHook:(header: RawAxiosResponseHeaders | AxiosResponseHeaders)=>void;
+    signOut:()=>void,
+    saveToken:(token:string)=>void;
+    token:()=>string;
+    refreshToken:()=>string;
     messageBox:(type:'error'|'success'|'warning'|'info',message:string)=>void;
-    api:{
-        baseUrl:string;
-        timeout:number;
-        bigUploadApi:string;
-        normalUploadAPi:string;
-    };
-    storeHook:{
-        sinOut:()=>void,
-        saveToken:(token:string)=>void;
-        token:()=>string;
-        refreshToken:()=>string;
-    };
-    uploadHook: {
-        uploadNotify:(e:{uid:string|number,message:string})=>void
-    }
+    chunkSize:number;
+    uploadNotify:(e:{uid:string|number,message:string})=>void;
+    [key:string]:any
 }
 /**
  * 登录响应
@@ -36,11 +36,17 @@ export interface LoginResponse{
    }
 }
 /**
- * 是对象指定属性变为可选
+ * 使对象指定属性变为可选
  */
 export type PartialByKeys<T, K extends keyof T> = {
 	[P in K]?: T[P];
 } & Pick<T, Exclude<keyof T, K>>;
+/**
+ * 使对象指定属性全部变为可选
+ */
+export type Optional<T> = {
+    [K in keyof T]?: T[K];
+};
 /**
  * @description axios 默认响应
 */

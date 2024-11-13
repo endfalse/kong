@@ -104,7 +104,7 @@ export const formatFileSize = (bytes: number): string  =>{
     }
     const value = bytes.toFixed(2);
     const parts = value.split('.');
-    if (parts.length > 1 && parts[1].match(/^0*$/)) {
+    if (parts.length > 1 && parts[1]?.match(/^0*$/)) {
       return parts[0] + ' ' + units[i];
     } else {
       return value + ' ' + units[i];

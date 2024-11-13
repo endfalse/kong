@@ -1,4 +1,4 @@
-# kongj
+# CORE
 ## 说明:
 > 用于辅助前端开发的工具包
 - 【RequestFactory】基于Axios封装的标准化前端请求模块

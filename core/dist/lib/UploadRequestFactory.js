@@ -122,7 +122,6 @@ var UploadRequestFactory = /** @class */ (function () {
                                 throw new Error('返回的数据格式错误');
                             }
                             if (ajaxResult.code == AjaxResultCode.uploadInstant) {
-                                console.log('已存在：秒传成功!');
                                 option.loaded = option.file.size;
                                 option.onProgress({ percent: 100, message: ajaxResult.message });
                                 var ret = { code: AjaxResultCode.uploadInstant, data: ajaxResult.data, message: ajaxResult.message };
@@ -139,7 +138,6 @@ var UploadRequestFactory = /** @class */ (function () {
                                 uploadIfNot && uploadIfNot(ajaxResult.data ? ajaxResult.data.split('') : []);
                             }
                             else if (ajaxResult.code === AjaxResultCode.unUpload) {
-                                console.log('未上传此文件，开始全新上传');
                                 uploadIfNot && uploadIfNot([]);
                             }
                             else {

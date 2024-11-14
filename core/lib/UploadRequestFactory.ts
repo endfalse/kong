@@ -42,11 +42,11 @@ class UploadRequestFactory{
         ) {
             let msg: string
             if (xhr.response) {
-            msg = `${xhr.response.error || xhr.response}`
+                msg = `${xhr.response.error || xhr.response}`
             } else if (xhr.responseText) {
-            msg = `${xhr.responseText}`
+                msg = `${xhr.responseText}`
             } else {
-            msg = `fail to ${option.method} ${action} ${xhr.status}`
+                msg = `fail to ${option.method} ${action} ${xhr.status}`
             }
             return {message: msg, status:xhr.status, method:option.method, url:action} as UploadAjaxError
     }
@@ -72,29 +72,27 @@ class UploadRequestFactory{
         const response =  this.request.getAxiosResponse(xhr,option as any)
         const unwapperFun=(ajaxResult: AjaxResult):any=>{
             if(typeof(ajaxResult.code)==='undefined'){
-            throw new Error('返回的数据格式错误')
+                throw new Error('返回的数据格式错误')
             }
             if(ajaxResult.code == AjaxResultCode.uploadInstant){
-            console.log('已存在：秒传成功!')
-            option.loaded=option.file.size
-            option.onProgress({percent:100,message:ajaxResult.message} as any)
-            const ret ={code:AjaxResultCode.uploadInstant,data:ajaxResult.data,message:ajaxResult.message}
-            option.onSuccess(ret)
-            return ret
+                option.loaded=option.file.size
+                option.onProgress({percent:100,message:ajaxResult.message} as any)
+                const ret ={code:AjaxResultCode.uploadInstant,data:ajaxResult.data,message:ajaxResult.message}
+                option.onSuccess(ret)
+                return ret
             }
             else if (ajaxResult.code == AjaxResultCode.Success) {
-            option.onProgress({percent:100,message:ajaxResult.message} as any)
-            const ret ={code:AjaxResultCode.Success,data:ajaxResult.data,message:ajaxResult.message}
-            option.onSuccess(ret)
-            return ret
+                option.onProgress({percent:100,message:ajaxResult.message} as any)
+                const ret ={code:AjaxResultCode.Success,data:ajaxResult.data,message:ajaxResult.message}
+                option.onSuccess(ret)
+                return ret
             }
             else if(ajaxResult.code == AjaxResultCode.uploadSuccessPart){
-            uploadIfNot&&uploadIfNot(ajaxResult.data?ajaxResult.data.split(''):[])
+                uploadIfNot&&uploadIfNot(ajaxResult.data?ajaxResult.data.split(''):[])
             }
             else if(ajaxResult.code === AjaxResultCode.unUpload)
             {
-            console.log('未上传此文件，开始全新上传')
-            uploadIfNot&&uploadIfNot([])
+                uploadIfNot&&uploadIfNot([])
             }
             else{
                 throw new Error('返回的数据格式错误')

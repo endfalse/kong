@@ -3,8 +3,8 @@ import { AxiosConfig, Optional } from "./types"
 const config:AxiosConfig={
     baseUrl:'https://j.jq123.net',
     timeout:3000,
-    bigUploadApi:'',
-    normalUploadApi:'',
+    bigUploadApi:'https://j.jq123.net/file/uploadBig',
+    normalUploadApi:'https://j.jq123.net/file',
     refreshTokenApi:'system/user/refreshToken',
     headerHook:()=>{
         console.debug("尚未实现kconfig.api.headerHook")

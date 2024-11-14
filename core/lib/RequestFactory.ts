@@ -1,6 +1,6 @@
 import axios , { AxiosError, AxiosRequestConfig, AxiosResponse, AxiosInstance, InternalAxiosRequestConfig } from 'axios'
 import { AjaxResultCode } from '../enums/system'
-import { AjaxResult, AxiosConfig, Optional } from '../types/index'
+import { AjaxResult, AxiosConfig, Optional } from '../types'
 import kconfig from '../kconfig'
 class RequestFactory{
     private service: AxiosInstance
@@ -220,11 +220,11 @@ class RequestFactory{
     }
 
     public get bigUploadApi(){
-        return `${this.config.baseUrl}/file/uploadBig`
+        return this.config.bigUploadApi
     }
 
     public get normalUploadApi(){
-        return `${this.config.baseUrl}/file`
+        return this.config.normalUploadApi
     }
     
     /**
@@ -232,8 +232,8 @@ class RequestFactory{
      * @author kongjing
      * @date 2022.10.12
      */
-    public request=<T=any>(config: AxiosRequestConfig): Promise<T>=>{
-        return this.service(config) as any;
+    public request=<T=any,D=any>(config: AxiosRequestConfig<D>): Promise<T>=>{
+        return this.service(config);
     }
 }
 

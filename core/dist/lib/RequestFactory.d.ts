@@ -1,5 +1,5 @@
 import { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { AjaxResult, AxiosConfig, Optional } from '../types/index';
+import { AjaxResult, AxiosConfig, Optional } from '../types';
 declare class RequestFactory {
     private service;
     private get defaultInterceptor();
@@ -20,6 +20,6 @@ declare class RequestFactory {
      * @author kongjing
      * @date 2022.10.12
      */
-    request: <T = any>(config: AxiosRequestConfig) => Promise<T>;
+    request: <T = any, D = any>(config: AxiosRequestConfig<D>) => Promise<T>;
 }
 export default RequestFactory;

@@ -257,14 +257,14 @@ var RequestFactory = /** @class */ (function () {
     });
     Object.defineProperty(RequestFactory.prototype, "bigUploadApi", {
         get: function () {
-            return "".concat(this.config.baseUrl, "/file/uploadBig");
+            return this.config.bigUploadApi;
         },
         enumerable: false,
         configurable: true
     });
     Object.defineProperty(RequestFactory.prototype, "normalUploadApi", {
         get: function () {
-            return "".concat(this.config.baseUrl, "/file");
+            return this.config.normalUploadApi;
         },
         enumerable: false,
         configurable: true

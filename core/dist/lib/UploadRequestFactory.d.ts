@@ -9,7 +9,7 @@ declare class UploadRequestFactory {
     private uploadNotify;
     private request;
     constructor(config: Optional<AxiosConfig>);
-    create: () => (option: OptionType) => Promise<UploadRequestHandler>;
+    create: (option: OptionType) => Promise<UploadRequestHandler>;
     private getError;
     private isNil;
     private sliceFile;

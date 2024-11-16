@@ -67,8 +67,8 @@ var UploadRequestFactory = /** @class */ (function () {
         var _this = this;
         //默认文件分片上传大小
         this.chunkSize = 1024 * 1024 * 1;
-        this.create = function () {
-            return _this.httpRequest;
+        this.create = function (option) {
+            return _this.httpRequest(option);
         };
         for (var key in kconfig) {
             if (config[key] === undefined) {

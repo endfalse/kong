@@ -31,8 +31,8 @@ class UploadRequestFactory{
         this.chunkSize = kconfig.chunkSize
         this.request = new RequestFactory(config)
     }
-    public create=()=>{
-        return this.httpRequest
+    public create=(option:OptionType)=>{
+        return this.httpRequest(option)
     }
 
     private getError (

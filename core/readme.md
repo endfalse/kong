@@ -1,6 +1,7 @@
 # CORE
 ## 修复说明
 - 修复 UploadRequestFactory实例导出丢失this问题
+- [20241120] 处理文件上传请求时请求头令牌设置问题
 ## 说明:
 > 用于辅助前端开发的工具包
 - 【RequestFactory】基于Axios封装的标准化前端请求模块

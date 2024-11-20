@@ -139,7 +139,6 @@ var RequestFactory = /** @class */ (function () {
                                         case 0:
                                             if (!token) return [3 /*break*/, 2];
                                             this.config.saveToken(token);
-                                            response.headers['Authorization'] = "Bearer ".concat(token);
                                             this.config.headerHook(response.headers);
                                             return [4 /*yield*/, this.service(response.config)];
                                         case 1:
@@ -157,12 +156,13 @@ var RequestFactory = /** @class */ (function () {
                             });
                         });
                     }
-                    else if (_this.requests.isRefreshing) {
-                        return Promise.reject("刷新令牌已失效");
-                    }
+                    // else if(this.requests.isRefreshing)
+                    // {
+                    //   return Promise.reject("刷新令牌已失效")
+                    // }
                     return new Promise(function (resolve) {
-                        _this.requests.listing.push(function (token) {
-                            response.headers['Authorization'] = "Bearer ".concat(token);
+                        _this.requests.listing.push(function (_) {
+                            //response.headers['Authorization'] = `Bearer ${token}`
                             _this.config.headerHook(response.headers);
                             _this.service(response.config).then(function (real) {
                                 resolveFn_1(resolve, real);
@@ -226,6 +226,13 @@ var RequestFactory = /** @class */ (function () {
                 }
                 return config;
             };
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(RequestFactory.prototype, "axiosConfig", {
+        get: function () {
+            return this.config;
         },
         enumerable: false,
         configurable: true

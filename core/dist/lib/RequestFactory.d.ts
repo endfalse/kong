@@ -5,6 +5,7 @@ declare class RequestFactory {
     private get defaultInterceptor();
     private config;
     constructor(config: Optional<AxiosConfig>);
+    get axiosConfig(): AxiosConfig;
     private get requests();
     private refreshToken;
     private tryPopMessage;

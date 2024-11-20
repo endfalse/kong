@@ -4,7 +4,8 @@ import RequestFactory from "./RequestFactory"
 import { getFileMd5 } from "../utils/index"
 import { UploadAjaxError, UploadProgressEvent, UploadRequestHandler, UploadRequestOptions } from "../types/upload"
 import kconfig from '../kconfig'
-type OptionType = Omit<UploadRequestOptions,'data'>&{
+import { AxiosRequestHeaders, RawAxiosRequestHeaders } from "axios"
+export type RequestOptionType = Omit<UploadRequestOptions,'data'>&{
   data: Record<string, string | Blob | [string | Blob, string]>,
   loaded?: number
 }
@@ -31,13 +32,13 @@ class UploadRequestFactory{
         this.chunkSize = kconfig.chunkSize
         this.request = new RequestFactory(config)
     }
-    public create=(option:OptionType)=>{
+    public create=(option:RequestOptionType)=>{
         return this.httpRequest(option)
     }
 
     private getError (
             action: string,
-            option: OptionType,
+            option: RequestOptionType,
             xhr: XMLHttpRequest
         ) {
             let msg: string
@@ -67,7 +68,7 @@ class UploadRequestFactory{
     }
 
     //下一步响应处理兼容本框架异步axos封装逻辑
-    private async nextProcess (xhr:XMLHttpRequest,option:OptionType,uploadIfNot:((uploadedMap:string[])=>void)|undefined =undefined):Promise<AjaxResult|undefined>
+    private async nextProcess (xhr:XMLHttpRequest,option:RequestOptionType,uploadIfNot:((uploadedMap:string[])=>void)|undefined =undefined):Promise<AjaxResult|undefined>
     {
         const response =  this.request.getAxiosResponse(xhr,option as any)
         const unwapperFun=(ajaxResult: AjaxResult):any=>{
@@ -101,9 +102,10 @@ class UploadRequestFactory{
         return await this.request.responseProcess(response,unwapperFun)
     }
 
-    private setHeaders(xhr:XMLHttpRequest,headers:Headers | Record<string, string | number | null | undefined>,withCredentials:boolean){
+    private setHeaders(xhr:XMLHttpRequest,headers:RawAxiosRequestHeaders | AxiosRequestHeaders,withCredentials:boolean){
         xhr.withCredentials = withCredentials
         headers = headers || {}
+        this.request.axiosConfig?.headerHook(headers)
         if (headers instanceof Headers) {
             headers.forEach((value, key) => xhr.setRequestHeader(key, value))
         } 
@@ -116,7 +118,7 @@ class UploadRequestFactory{
     }
 
     //执行文件分片上传
-    private uploadCore(md5:string, option:OptionType, uploadedMap:string[]){
+    private uploadCore(md5:string, option:RequestOptionType, uploadedMap:string[]){
         return new Promise<boolean>(resolve=>{
             const fileslices = this.sliceFile(option.file,this.chunkSize);
             let currentIndex =0
@@ -184,7 +186,7 @@ class UploadRequestFactory{
      * @author kongjing
      * @date 2024.11.11
      * */ 
-    private async httpRequest(option:OptionType) : Promise<UploadRequestHandler> {
+    private async httpRequest(option:RequestOptionType) : Promise<UploadRequestHandler> {
         if (typeof XMLHttpRequest === 'undefined'){
             throw new KongError(`[XMLHttpRequest is undefined`)
         }

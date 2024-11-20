@@ -39,7 +39,9 @@ class RequestFactory{
             }
         )
     }
-
+    public get axiosConfig() {
+        return this.config
+    }
     private get requests(){
         const that =this
         return {
@@ -164,12 +166,11 @@ class RequestFactory{
           if(code===AjaxResultCode.InvalidToken){
             if(!this.requests.isRefreshing)
             {
-                this.requests.isRefreshing=true
+              this.requests.isRefreshing=true
               return new Promise(resolve=>{
                 this.refreshToken().then(async token=>{
                     if (token) {
                       this.config.saveToken(token)
-                      response.headers['Authorization'] = `Bearer ${token}`
                       this.config.headerHook(response.headers)
                       const newret =  await this.service(response.config)
                       this.requests.listing.forEach((cb) => cb(token))
@@ -184,12 +185,13 @@ class RequestFactory{
                 })
               }) 
             }
-            else if(this.requests.isRefreshing){
-              return Promise.reject("刷新令牌已失效")
-            }
+            // else if(this.requests.isRefreshing)
+            // {
+            //   return Promise.reject("刷新令牌已失效")
+            // }
             return new Promise<any>(resolve=>{
-                this.requests.listing.push(token=>{
-                  response.headers['Authorization'] = `Bearer ${token}`
+                this.requests.listing.push(_=>{
+                  //response.headers['Authorization'] = `Bearer ${token}`
                   this.config.headerHook(response.headers)
                   this.service(response.config).then(real=>{
                     resolveFn(resolve,real)

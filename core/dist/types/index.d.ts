@@ -1,4 +1,4 @@
-import { AxiosResponseHeaders, RawAxiosResponseHeaders } from "axios";
+import { AxiosRequestHeaders, AxiosResponseHeaders, RawAxiosRequestHeaders, RawAxiosResponseHeaders } from "axios";
 import { FeedbackEnum, AjaxResultCode } from "../enums/system";
 export interface AxiosConfig {
     baseUrl: string;
@@ -6,7 +6,7 @@ export interface AxiosConfig {
     bigUploadApi: string;
     normalUploadApi: string;
     refreshTokenApi: string;
-    headerHook: (header: RawAxiosResponseHeaders | AxiosResponseHeaders) => void;
+    headerHook: (header: RawAxiosRequestHeaders | AxiosRequestHeaders | RawAxiosResponseHeaders | AxiosResponseHeaders) => void;
     signOut: () => void;
     saveToken: (token: string) => void;
     token: () => string;

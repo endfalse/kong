@@ -1,6 +1,6 @@
 import { AxiosConfig, Optional } from "../types/index";
 import { UploadRequestHandler, UploadRequestOptions } from "../types/upload";
-type OptionType = Omit<UploadRequestOptions, 'data'> & {
+export type RequestOptionType = Omit<UploadRequestOptions, 'data'> & {
     data: Record<string, string | Blob | [string | Blob, string]>;
     loaded?: number;
 };
@@ -9,7 +9,7 @@ declare class UploadRequestFactory {
     private uploadNotify;
     private request;
     constructor(config: Optional<AxiosConfig>);
-    create: (option: OptionType) => Promise<UploadRequestHandler>;
+    create: (option: RequestOptionType) => Promise<UploadRequestHandler>;
     private getError;
     private isNil;
     private sliceFile;

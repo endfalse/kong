@@ -27,3 +27,7 @@ export interface UploadProgressEvent extends ProgressEvent {
 
 export type UploadRequestHandler = (options: UploadRequestOptions) => XMLHttpRequest | Promise<unknown>;
 
+export type RequestOptionType = Omit<UploadRequestOptions,'data'>&{
+    data: Record<string, string | Blob | [string | Blob, string]>,
+    loaded?: number
+}

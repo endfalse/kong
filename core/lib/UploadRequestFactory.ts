@@ -2,13 +2,9 @@ import { AjaxResult, AxiosConfig, Optional } from "../types/index"
 import { AjaxResultCode } from "../enums/system"
 import RequestFactory from "./RequestFactory"
 import { getFileMd5 } from "../utils/index"
-import { UploadAjaxError, UploadProgressEvent, UploadRequestHandler, UploadRequestOptions } from "../types/upload"
+import { RequestOptionType, UploadAjaxError, UploadProgressEvent, UploadRequestHandler, UploadRequestOptions } from "../types/upload"
 import kconfig from '../kconfig'
 import { AxiosRequestHeaders, RawAxiosRequestHeaders } from "axios"
-export type RequestOptionType = Omit<UploadRequestOptions,'data'>&{
-  data: Record<string, string | Blob | [string | Blob, string]>,
-  loaded?: number
-}
 class KongError extends Error {
   constructor(m: string) {
     super(m)
@@ -52,7 +48,7 @@ class UploadRequestFactory{
             return {message: msg, status:xhr.status, method:option.method, url:action} as UploadAjaxError
     }
     private isNil(value: string | number | null | undefined) {
-        return value === null || value === undefined || isNaN(value as any);
+        return value === null || value === undefined;
     }
     //文件切片
     private sliceFile (file:File, chunkSize = 1024 * 1024 * 2)  {
@@ -127,7 +123,7 @@ class UploadRequestFactory{
                 const ret = await this.nextProcess(xhr,option)
                 if(!!ret&&(ret.code === AjaxResultCode.uploadInstant||ret.code === AjaxResultCode.Success))
                 {
-                resolve(true)
+                    resolve(true)
                 }
                 currentIndex++
                 sendAjax()
@@ -138,7 +134,6 @@ class UploadRequestFactory{
             if (option.withCredentials && 'withCredentials' in xhr) {
                 xhr.withCredentials = true
             }
-            this.setHeaders(xhr,option.headers,option.withCredentials && 'withCredentials' in xhr)
             let lastIndex = uploadedMap.lastIndexOf('1')
             lastIndex = lastIndex==-1?fileslices.length-1:lastIndex
             const sendAjax=()=>{
@@ -163,6 +158,7 @@ class UploadRequestFactory{
                         }
                     }
                     xhr.open(option.method,option.action, true)
+                    this.setHeaders(xhr,option.headers,option.withCredentials && 'withCredentials' in xhr)
                     xhr.send(data)
                 }
                 option.loaded=(option.loaded||0) + blob.size
@@ -201,7 +197,6 @@ class UploadRequestFactory{
          **/
         return new Promise(_=>{
             const xhr = new XMLHttpRequest()
-            this.setHeaders(xhr,option.headers,true)
             var urlParams = new URLSearchParams()
             urlParams.append("title",option.file.name)
             urlParams.append("md5",md5)
@@ -227,6 +222,7 @@ class UploadRequestFactory{
                 option.onError( this.getError(option.action, option, xhr))
             }) 
             xhr.open('get',`${option.action}/preCheck?${urlParams.toString()}`,true)
+            this.setHeaders(xhr,option.headers,true)
             xhr.send(urlParams)
         })
     }

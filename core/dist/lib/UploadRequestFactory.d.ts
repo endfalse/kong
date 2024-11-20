@@ -1,9 +1,5 @@
 import { AxiosConfig, Optional } from "../types/index";
-import { UploadRequestHandler, UploadRequestOptions } from "../types/upload";
-export type RequestOptionType = Omit<UploadRequestOptions, 'data'> & {
-    data: Record<string, string | Blob | [string | Blob, string]>;
-    loaded?: number;
-};
+import { RequestOptionType, UploadRequestHandler } from "../types/upload";
 declare class UploadRequestFactory {
     private chunkSize;
     private uploadNotify;

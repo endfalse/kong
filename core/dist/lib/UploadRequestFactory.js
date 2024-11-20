@@ -93,7 +93,7 @@ var UploadRequestFactory = /** @class */ (function () {
         return { message: msg, status: xhr.status, method: option.method, url: action };
     };
     UploadRequestFactory.prototype.isNil = function (value) {
-        return value === null || value === undefined || isNaN(value);
+        return value === null || value === undefined;
     };
     //文件切片
     UploadRequestFactory.prototype.sliceFile = function (file, chunkSize) {
@@ -196,7 +196,6 @@ var UploadRequestFactory = /** @class */ (function () {
             if (option.withCredentials && 'withCredentials' in xhr) {
                 xhr.withCredentials = true;
             }
-            _this.setHeaders(xhr, option.headers, option.withCredentials && 'withCredentials' in xhr);
             var lastIndex = uploadedMap.lastIndexOf('1');
             lastIndex = lastIndex == -1 ? fileslices.length - 1 : lastIndex;
             var sendAjax = function () {
@@ -226,6 +225,7 @@ var UploadRequestFactory = /** @class */ (function () {
                             }
                         }
                         xhr.open(option.method, option.action, true);
+                        _this.setHeaders(xhr, option.headers, option.withCredentials && 'withCredentials' in xhr);
                         xhr.send(data);
                     }
                     option.loaded = (option.loaded || 0) + blob.size;
@@ -277,7 +277,6 @@ var UploadRequestFactory = /** @class */ (function () {
                          **/
                         return [2 /*return*/, new Promise(function (_) {
                                 var xhr = new XMLHttpRequest();
-                                _this.setHeaders(xhr, option.headers, true);
                                 var urlParams = new URLSearchParams();
                                 urlParams.append("title", option.file.name);
                                 urlParams.append("md5", md5);
@@ -323,6 +322,7 @@ var UploadRequestFactory = /** @class */ (function () {
                                     option.onError(_this.getError(option.action, option, xhr));
                                 });
                                 xhr.open('get', "".concat(option.action, "/preCheck?").concat(urlParams.toString()), true);
+                                _this.setHeaders(xhr, option.headers, true);
                                 xhr.send(urlParams);
                             })];
                 }

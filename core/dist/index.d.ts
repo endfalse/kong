@@ -10,3 +10,5 @@ declare const _default: (axiosConfig: Optional<AxiosConfig>) => {
     request: <T = any, D = any>(config: AxiosRequestConfig<D>) => Promise<T>;
 };
 export default _default;
+export * from './types';
+//# sourceMappingURL=index.d.ts.map

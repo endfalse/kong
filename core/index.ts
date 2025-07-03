@@ -14,3 +14,5 @@ export default (axiosConfig:Optional<AxiosConfig>)=>{
     }
     return {getAxiosResponse,responseProcess,request}
 }
+
+export * from './types'

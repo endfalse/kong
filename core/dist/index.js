@@ -11,3 +11,4 @@ export default (function (axiosConfig) {
     };
     return { getAxiosResponse: getAxiosResponse, responseProcess: responseProcess, request: request };
 });
+export * from './types';

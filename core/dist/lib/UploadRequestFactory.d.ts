@@ -20,3 +20,4 @@ declare class UploadRequestFactory {
     private httpRequest;
 }
 export default UploadRequestFactory;
+//# sourceMappingURL=UploadRequestFactory.d.ts.map

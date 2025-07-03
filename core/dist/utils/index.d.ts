@@ -31,3 +31,4 @@ export type FileType = 'doc' | 'ppt' | 'excel' | 'txt' | 'csv' | 'rar' | 'zip' |
  *
 */
 export declare const checkIsAllowFileType: (filetype: string, allowedTypes: FileType[]) => boolean;
+//# sourceMappingURL=index.d.ts.map

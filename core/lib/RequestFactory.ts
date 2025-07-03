@@ -32,9 +32,7 @@ class RequestFactory{
         )
         this.service.interceptors.response.use(this.responseProcess,
             (error: AxiosError)=> {
-              const badMessage: any = error.message || error
-              const code = parseInt(badMessage.toString().replace('Request failed with status code ', ''))
-              this.showError({ status: code, message: badMessage })
+              this.showError(error)
               return Promise.reject(error)
             }
         )
@@ -93,21 +91,35 @@ class RequestFactory{
               message&&this.config.messageBox('success',message)
               break;
             default:
-                this.config.messageBox('success',message || '这是一个未能识别的提示信息，请检查接口信息')
+                this.config.messageBox('error',message || `未能识别code:${code}，请检查接口`)
               break;
           }
         }
     }
-      
-    // 错误处理
-    private showError=(error: any) =>{
-    // token过期，清除本地数据，并跳转至登录页面
-    if (error.status === 403||error.status === 401) {
-        this.config.signOut()
-    } else {
-      const {message} = error
-      this.config.messageBox('error',message || '服务异常')
+    isAjaxResult(ajaxResult: any): ajaxResult is AjaxResult {
+      return ajaxResult && typeof ajaxResult === 'object' && 'code' in ajaxResult
     }
+    // 错误处理
+    private showError=(error: AxiosError | AxiosResponse<AjaxResult>) =>{
+      if(error instanceof AxiosError)
+      {
+       if(this.isAjaxResult(error.response?.data)){
+         this.tryPopMessage(error.response.data)
+       }
+       else{
+        const badMessage: any = error.message || error
+        this.config.messageBox('error',badMessage || '服务异常')
+      }
+      // token过期，清除本地数据，并跳转至登录页面
+      if (error.status === 403||error.status === 401) {
+        setTimeout(() => {
+          this.config.signOut()
+        },3000);
+      }
+     }
+     else{
+        this.tryPopMessage(error.data)
+     }
     }
 
     //获取响应体数据

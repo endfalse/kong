@@ -18,3 +18,4 @@ export default class ProgressComputing {
     aniamteStart(uid: string): void;
     get percentage(): number;
 }
+//# sourceMappingURL=ProgressComputing.d.ts.map

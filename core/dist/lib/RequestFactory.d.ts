@@ -9,6 +9,7 @@ declare class RequestFactory {
     private get requests();
     private refreshToken;
     private tryPopMessage;
+    isAjaxResult(ajaxResult: any): ajaxResult is AjaxResult;
     private showError;
     private getBody;
     unWrapResponse: (nativeResponse: AxiosResponse) => any;
@@ -24,3 +25,4 @@ declare class RequestFactory {
     request: <T = any, D = any>(config: AxiosRequestConfig<D>) => Promise<T>;
 }
 export default RequestFactory;
+//# sourceMappingURL=RequestFactory.d.ts.map

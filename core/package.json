@@ -1,6 +1,6 @@
 {
-  "name": "kongj",
-  "version": "2.0.6",
+  "name": "hiback",
+  "version": "2.1.0",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

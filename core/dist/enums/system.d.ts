@@ -82,3 +82,4 @@ export declare enum LocaleTypeEnum {
      */
     Product = 3
 }
+//# sourceMappingURL=system.d.ts.map

@@ -1,6 +1,9 @@
 import { AxiosRequestHeaders, AxiosResponseHeaders, RawAxiosRequestHeaders, RawAxiosResponseHeaders } from "axios";
 import { FeedbackEnum, AjaxResultCode } from "../enums/system";
-
+export * from './contants'
+export * from './upload'
+export * from '../enums/account'
+export * from '../enums/system'
 export interface AxiosConfig{
     baseUrl:string;
     timeout:number;

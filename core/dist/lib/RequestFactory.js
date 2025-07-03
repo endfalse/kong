@@ -34,7 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { AjaxResultCode } from '../enums/system';
 import kconfig from '../kconfig';
 var RequestFactory = /** @class */ (function () {
@@ -68,20 +68,31 @@ var RequestFactory = /** @class */ (function () {
                         message && _this.config.messageBox('success', message);
                         break;
                     default:
-                        _this.config.messageBox('success', message || '这是一个未能识别的提示信息，请检查接口信息');
+                        _this.config.messageBox('error', message || "\u672A\u80FD\u8BC6\u522Bcode:".concat(code, "\uFF0C\u8BF7\u68C0\u67E5\u63A5\u53E3"));
                         break;
                 }
             }
         };
         // 错误处理
         this.showError = function (error) {
-            // token过期，清除本地数据，并跳转至登录页面
-            if (error.status === 403 || error.status === 401) {
-                _this.config.signOut();
+            var _a;
+            if (error instanceof AxiosError) {
+                if (_this.isAjaxResult((_a = error.response) === null || _a === void 0 ? void 0 : _a.data)) {
+                    _this.tryPopMessage(error.response.data);
+                }
+                else {
+                    var badMessage = error.message || error;
+                    _this.config.messageBox('error', badMessage || '服务异常');
+                }
+                // token过期，清除本地数据，并跳转至登录页面
+                if (error.status === 403 || error.status === 401) {
+                    setTimeout(function () {
+                        _this.config.signOut();
+                    }, 3000);
+                }
             }
             else {
-                var message = error.message;
-                _this.config.messageBox('error', message || '服务异常');
+                _this.tryPopMessage(error.data);
             }
         };
         //获取响应体数据
@@ -205,9 +216,7 @@ var RequestFactory = /** @class */ (function () {
         // 请求前的统一处理
         this.service.interceptors.request.use(this.defaultInterceptor, function (error) { return Promise.reject(error); });
         this.service.interceptors.response.use(this.responseProcess, function (error) {
-            var badMessage = error.message || error;
-            var code = parseInt(badMessage.toString().replace('Request failed with status code ', ''));
-            _this.showError({ status: code, message: badMessage });
+            _this.showError(error);
             return Promise.reject(error);
         });
     }
@@ -262,6 +271,9 @@ var RequestFactory = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
+    RequestFactory.prototype.isAjaxResult = function (ajaxResult) {
+        return ajaxResult && typeof ajaxResult === 'object' && 'code' in ajaxResult;
+    };
     Object.defineProperty(RequestFactory.prototype, "bigUploadApi", {
         get: function () {
             return this.config.bigUploadApi;
